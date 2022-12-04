@@ -2,11 +2,23 @@
 
 heic2rgb is a Python package which does exactly one thing: convert the main image in a HEIC file to raw RGB pixels.
 
+## Usage
+Simply pass the HEIC file as `bytes` to the decode function:
+
+```python
+import heic2rgb
+image = heic2rgb.decode(heic_bytes)
+```
+
+This will return a `RgbImage` object with `width`, `height` and `data` properties, where `data` is the decoded image as `bytes`.
+
+
 ## Build
 ### Linux
 **0\)** Install prerequisites:
 ```sh
-sudo apt install cmake g++ ffmpeg libavcodec-dev libswscale-dev
+sudo apt update
+sudo apt install make cmake g++ python3-pip ffmpeg libavcodec-dev libswscale-dev
 pip install scikit-build
 ```
 
