@@ -18,7 +18,7 @@ Decoding a 5632x4352 image on a i5-4440:
 |Library|Mean|Std. dev.|
 |-------|----|---------|
 |heic2rgb 0.1|0.59 s|0.01 s|
-|pillow-heif 0.9.1|1.42 s|0.01 s|
+|pillow-heif 0.10.0|1.35 s|0.01 s|
 |pyheif 0.7.1|1.55 s|0.07 s|
 
 ## Build

@@ -25,15 +25,11 @@ with open("0.heic", "rb") as f:
 runner.timeit(
     name="Decode with pillow_heif",
     setup="""\
-import io
-from PIL import Image
 import pillow_heif
-pillow_heif.register_heif_opener()
-with open("0.heic", "rb") as f:
-    heic_bytes = f.read()
+import numpy as np
+heif_file = pillow_heif.open_heif("0.heic")
     """,
     stmt="""\
-with Image.open(io.BytesIO(heic_bytes)) as image:
-    tmp = image.getdata()
+np_array = np.asarray(heif_file)
     """,
 )
