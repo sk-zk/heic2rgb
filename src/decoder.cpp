@@ -15,6 +15,7 @@ extern "C" {
     #include <libavutil/imgutils.h>
     #include <libavcodec/avcodec.h>
     #include <libswscale/swscale.h>
+    #include <libavutil/log.h>
 };
 
 /*#include <chrono>
@@ -87,6 +88,9 @@ int copyFrameInto(AVFrame* frame, uint8_t* dst, size_t dst_size)
 
 RgbImage convertToRgb(std::vector<uint8_t>& hevcBuffer)
 {
+    // suppress "deprecated pixel format used" warning
+    av_log_set_level(AV_LOG_QUIET);
+
     AVCodecContext* c = getHEVCDecoderContext();
     AVFrame* frame = av_frame_alloc();
 
