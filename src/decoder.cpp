@@ -64,7 +64,7 @@ int copyFrameInto(AVFrame* frame, uint8_t* dst, size_t dst_size)
     uint8_t* tempBuffer = (uint8_t*)av_malloc(dst_size);
 
     struct SwsContext* sws_ctx = sws_getCachedContext(swsContext,
-        width, height, AV_PIX_FMT_YUV420P,
+        width, height, AV_PIX_FMT_YUVJ420P,
         width, height, AV_PIX_FMT_RGB24,
         0, nullptr, nullptr, nullptr);
 
