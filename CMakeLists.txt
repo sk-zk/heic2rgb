@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14...3.22)
-project(heic2rgb VERSION "0.1.0")
+project(heic2rgb VERSION "0.2.0")
 
 if (UNIX AND NOT APPLE)
   set(CMAKE_CXX_STANDARD 14)
