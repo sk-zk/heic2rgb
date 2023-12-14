@@ -1,8 +1,7 @@
 # heic2rgb
 
 heic2rgb is a tiny companion library for [sk-zk/lookaround-map](https://github.com/sk-zk/lookaround-map).
-It can do exactly two things: decode the main image in a HEIC file to raw RGB pixels, or remux the HEVC bitstream of the main image into a MP4 container to be able to make use of
-the HEVC codec in Chromium-based browsers.
+It can do exactly two things: decode the main image in a HEIC file to raw RGB pixels, or remux the HEVC bitstream of the main image into an MP4 container.
 
 ## Usage
 ### Decoding
