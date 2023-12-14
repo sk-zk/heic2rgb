@@ -24,7 +24,7 @@ std::vector<uint8_t> muxHevcToMp4(const uint8_t* hevcData, size_t hevcSize, int 
     inputFormatCtx->streams[0]->r_frame_rate = av_make_q(25, 1);
     inputFormatCtx->streams[0]->codecpar->width = width;
     inputFormatCtx->streams[0]->codecpar->height = height;
-    inputFormatCtx->streams[0]->codecpar->format = 12;
+    inputFormatCtx->streams[0]->codecpar->format = AV_PIX_FMT_YUVJ420P;
     inputFormatCtx->streams[0]->codecpar->profile = 3;
     inputFormatCtx->streams[0]->codecpar->level = 180;
     inputFormatCtx->streams[0]->codecpar->color_range = AVCOL_RANGE_JPEG;
