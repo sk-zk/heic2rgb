@@ -11,6 +11,7 @@ if platform.system() == "Windows":
         "lib/ISOBMFF_DLL_v143.dll", 
         "lib/avcodec-59.dll", 
         "lib/avfilter-8.dll", 
+        "lib/avformat-59.dll", 
         "lib/avutil-57.dll",
         "lib/swresample-4.dll",
         "lib/swscale-6.dll",
@@ -20,7 +21,7 @@ else:
 
 setup(
     name="heic2rgb",
-    version="0.2.0",
+    version="0.3.0",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     cmake_install_dir="src/heic2rgb",

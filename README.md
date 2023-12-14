@@ -1,8 +1,11 @@
 # heic2rgb
 
-heic2rgb is a Python package which does exactly one thing: decode the main image in a HEIC file to raw RGB pixels.
+heic2rgb is a tiny companion library for [sk-zk/lookaround-map](https://github.com/sk-zk/lookaround-map).
+It can do exactly two things: decode the main image in a HEIC file to raw RGB pixels, or remux the HEVC bitstream of the main image into a MP4 container to be able to make use of
+the HEVC codec in Chromium-based browsers.
 
 ## Usage
+### Decoding
 Simply pass the HEIC file as `bytes` to the decode function:
 
 ```python
@@ -11,6 +14,11 @@ image = heic2rgb.decode(heic_bytes)
 ```
 
 This will return a `RgbImage` object with `width`, `height` and `data` properties, where `data` is the decoded image as `bytes`.
+
+### Remuxing
+```python
+mp4_bytes = heic2rgb.to_mp4(heic_bytes)
+````
 
 ## Benchmark
 Decoding a 5632x4352 image on a i5-4440:
@@ -26,7 +34,7 @@ Decoding a 5632x4352 image on a i5-4440:
 **0\)** Install prerequisites:
 ```sh
 sudo apt update
-sudo apt install make cmake g++ python3-pip ffmpeg libavcodec-dev libswscale-dev
+sudo apt install make cmake g++ python3-pip ffmpeg libavcodec-dev libavformat-dev libswscale-dev
 pip install scikit-build
 ```
 

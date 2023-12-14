@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14...3.22)
-project(heic2rgb VERSION "0.2.0")
+project(heic2rgb VERSION "0.3.0")
 
 if (UNIX AND NOT APPLE)
   set(CMAKE_CXX_STANDARD 14)
@@ -10,12 +10,14 @@ set(Headers "${CMAKE_CURRENT_SOURCE_DIR}/lib/headers/")
 
 if (WIN32)
   set(AvcodecPath "${CMAKE_CURRENT_SOURCE_DIR}/lib/avcodec.lib")
+  set(AvformatPath "${CMAKE_CURRENT_SOURCE_DIR}/lib/avformat.lib")
   set(AvutilPath "${CMAKE_CURRENT_SOURCE_DIR}/lib/avutil.lib")
   set(SwscalePath "${CMAKE_CURRENT_SOURCE_DIR}/lib/swscale.lib")
   set(ISOBMFFPath "${CMAKE_CURRENT_SOURCE_DIR}/lib/ISOBMFF.lib")
 endif()
 if (UNIX AND NOT APPLE)
   find_library(AVCODEC_LIBRARY avcodec)
+  find_library(AVFORMAT_LIBRARY avformat)
   find_library(AVUTIL_LIBRARY avutil)
   find_library(SWSCALE_LIBRARY swscale)
   set(ISOBMFFPath "${CMAKE_CURRENT_SOURCE_DIR}/lib/libISOBMFF.a")
@@ -36,12 +38,14 @@ pybind11_add_module(_core MODULE
   src/main.cpp
   src/heif.cpp
   src/decoder.cpp
+  src/remux.cpp
 )
 target_include_directories(_core PRIVATE ${Headers})
 if (WIN32)
   target_link_libraries(_core PRIVATE 
     ${ISOBMFFPath}
     ${AvcodecPath}
+    ${AvformatPath}
     ${AvutilPath}
     ${SwscalePath}
   )
@@ -50,6 +54,7 @@ if (UNIX AND NOT APPLE)
   target_link_libraries(_core PRIVATE
     ${ISOBMFFPath}
     ${AVCODEC_LIBRARY}
+    ${AVFORMAT_LIBRARY}
     ${AVUTIL_LIBRARY}
     ${SWSCALE_LIBRARY}
 )

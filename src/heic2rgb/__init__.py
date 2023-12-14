@@ -1,8 +1,8 @@
 from __future__ import annotations
 import os
 
-from ._core import decode, RgbImage
+from ._core import decode, RgbImage, to_mp4
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
-__all__ = ("__version__", "decode", "RgbImage")
+__all__ = ("__version__", "decode", "RgbImage", "to_mp4")
