@@ -52,9 +52,9 @@ std::vector<uint8_t> _toMp4(std::vector<uint8_t>& heicBuffer) {
     std::vector<uint8_t> hevcBuffer;
     getBitstream(heicBuffer, file, hevcBuffer);
 
-    auto dimensions = getDimensions(file);
+    auto hevcConfig = getHevcConfiguration(file);
 
-    return muxHevcToMp4(hevcBuffer.data(), hevcBuffer.size(), dimensions.width, dimensions.height);
+    return muxHevcToMp4(hevcBuffer.data(), hevcBuffer.size(), hevcConfig);
 }
 
 pybind11::bytes toMp4(std::string file) {

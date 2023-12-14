@@ -1,4 +1,5 @@
 #include <vector>
+#include "heif.h"
 
 extern "C" {
   #include <libavformat/avformat.h>
@@ -9,7 +10,7 @@ extern "C" {
   #include <libavutil/mem.h>
 }
 
-std::vector<uint8_t> muxHevcToMp4(const uint8_t* hevcData, size_t hevcSize, int width, int height) {
+std::vector<uint8_t> muxHevcToMp4(const uint8_t* hevcData, size_t hevcSize, HevcConfiguration hevcConfig) {
     AVFormatContext* inputFormatCtx = avformat_alloc_context();
     AVFormatContext* outputFormatCtx = avformat_alloc_context();
 
@@ -22,11 +23,11 @@ std::vector<uint8_t> muxHevcToMp4(const uint8_t* hevcData, size_t hevcSize, int 
     avformat_open_input(&inputFormatCtx, "", inputFormat, nullptr);
 
     inputFormatCtx->streams[0]->r_frame_rate = av_make_q(25, 1);
-    inputFormatCtx->streams[0]->codecpar->width = width;
-    inputFormatCtx->streams[0]->codecpar->height = height;
+    inputFormatCtx->streams[0]->codecpar->width = hevcConfig.width;
+    inputFormatCtx->streams[0]->codecpar->height = hevcConfig.height;
     inputFormatCtx->streams[0]->codecpar->format = AV_PIX_FMT_YUVJ420P;
-    inputFormatCtx->streams[0]->codecpar->profile = 3;
-    inputFormatCtx->streams[0]->codecpar->level = 180;
+    inputFormatCtx->streams[0]->codecpar->profile = 3; // Main Still Picture
+    inputFormatCtx->streams[0]->codecpar->level = hevcConfig.generalLevelIdc;
     inputFormatCtx->streams[0]->codecpar->color_range = AVCOL_RANGE_JPEG;
     inputFormatCtx->streams[0]->codecpar->chroma_location = AVCHROMA_LOC_LEFT;
 

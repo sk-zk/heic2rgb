@@ -1,3 +1,4 @@
+#include <pybind11/pybind11.h>
 #include "heif.h"
 #include "ISOBMFF.hpp"
 
@@ -17,15 +18,17 @@ void getHeader(std::shared_ptr<ISOBMFF::File>& file, std::vector<uint8_t>& buffe
     }
 }
 
-Dimensions getDimensions(std::shared_ptr<ISOBMFF::File>& file) {
+HevcConfiguration getHevcConfiguration(std::shared_ptr<ISOBMFF::File>& file) {
     auto meta = file->GetTypedBox<ISOBMFF::META>("meta");
     auto iprp = meta->GetTypedBox<ISOBMFF::ContainerBox>("iprp");
     auto ipco = iprp->GetTypedBox<ISOBMFF::IPCO>("ipco");
     auto ispe = ipco->GetTypedBox<ISOBMFF::ISPE>("ispe");
-    Dimensions dimensions{};
-    dimensions.width = ispe->GetDisplayWidth();
-    dimensions.height = ispe->GetDisplayHeight();
-    return dimensions;
+    auto hvcC = ipco->GetTypedBox<ISOBMFF::HVCC>("hvcC");
+    HevcConfiguration config{};
+    config.width = ispe->GetDisplayWidth();
+    config.height = ispe->GetDisplayHeight();
+    config.generalLevelIdc = hvcC->GetGeneralLevelIDC();
+    return config;
 }
 
 void getImageData(std::vector<uint8_t>& fileBuffer, std::shared_ptr<ISOBMFF::File>& file, std::vector<uint8_t>& buffer)
