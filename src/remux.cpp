@@ -1,3 +1,5 @@
+#include <vector>
+
 extern "C" {
   #include <libavformat/avformat.h>
   #include <libavcodec/avcodec.h>
@@ -7,14 +9,11 @@ extern "C" {
   #include <libavutil/mem.h>
 }
 
-size_t muxHevcToMp4(const uint8_t* hevc_data, size_t hevc_size, uint8_t** mp4_data, 
-    int width, int height) {
+std::vector<uint8_t> muxHevcToMp4(const uint8_t* hevcData, size_t hevcSize, int width, int height) {
     AVFormatContext* inputFormatCtx = avformat_alloc_context();
     AVFormatContext* outputFormatCtx = avformat_alloc_context();
 
-    AVIOContext* inputAvioCtx = 
-        avio_alloc_context(const_cast<uint8_t*>(hevc_data), hevc_size, 0, 
-            nullptr, nullptr, nullptr, nullptr);
+    AVIOContext* inputAvioCtx = avio_alloc_context(const_cast<uint8_t*>(hevcData), hevcSize, 0, nullptr, nullptr, nullptr, nullptr);
     inputFormatCtx->pb = inputAvioCtx;
 
     auto inputFormat = av_find_input_format("hevc");
@@ -65,10 +64,14 @@ size_t muxHevcToMp4(const uint8_t* hevc_data, size_t hevc_size, uint8_t** mp4_da
 
     av_write_trailer(outputFormatCtx);
 
-    size_t mp4Size = avio_close_dyn_buf(outputAvioCtx, mp4_data);
+    uint8_t* mp4Data = nullptr;
+    size_t mp4Size = avio_close_dyn_buf(outputAvioCtx, &mp4Data);
+    std::vector<uint8_t> mp4Out(mp4Data, mp4Data + mp4Size);
+    av_free(mp4Data);
 
     avformat_free_context(inputFormatCtx);
     avformat_free_context(outputFormatCtx);
+    avio_context_free(&inputAvioCtx);
 
-    return mp4Size;
+    return mp4Out;
 }

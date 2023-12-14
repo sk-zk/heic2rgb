@@ -47,19 +47,14 @@ RgbImage decode(std::string file) {
 }
 
 std::vector<uint8_t> _toMp4(std::vector<uint8_t>& heicBuffer) {
-    std::vector<uint8_t> hevcBuffer;
     auto file = parseIsobmffFile(heicBuffer);
+
+    std::vector<uint8_t> hevcBuffer;
     getBitstream(heicBuffer, file, hevcBuffer);
+
     auto dimensions = getDimensions(file);
 
-    uint8_t* mp4Buffer;
-    uint8_t* hevcData = hevcBuffer.data();
-    auto hevcSize = hevcBuffer.size();
-    auto size = muxHevcToMp4(hevcData, hevcSize, &mp4Buffer,
-        dimensions.width, dimensions.height);
-
-    std::vector<uint8_t> mp4(mp4Buffer, mp4Buffer + size);
-    return mp4;
+    return muxHevcToMp4(hevcBuffer.data(), hevcBuffer.size(), dimensions.width, dimensions.height);
 }
 
 pybind11::bytes toMp4(std::string file) {
